@@ -2,13 +2,13 @@
 
 <?php
 
-function request($name, $default = null) {
+function condition_injection_request($name, $default = null) {
     if (!isset($_REQUEST[$name]))
         return $default;
     return stripslashes_deep($_REQUEST[$name]);
 }
 
-function field_checkbox_only($name, $tips = '', $attrs = '', $link = null) {
+function condition_injection_add_field_checkbox_only($name, $tips = '', $attrs = '', $link = null) {
     global $options;
     echo '<td><input type="checkbox" ' . $attrs . ' name="options[' . $name . ']" value="1" ' .
     (isset($options[$name]) && (boolean)$options[$name] ? 'checked' : '') . '/>';
@@ -19,7 +19,7 @@ function field_checkbox_only($name, $tips = '', $attrs = '', $link = null) {
     echo '</td>';
 }
 
-function field_textarea($name, $label = '', $tips = '', $attrs = '') {
+function condition_injection_add_field_textarea($name, $label = '', $tips = '', $attrs = '') {
     global $options;
 
     if (!isset($options[$name]))
@@ -44,7 +44,7 @@ function field_textarea($name, $label = '', $tips = '', $attrs = '') {
 if (isset($_POST['save'])) {
     if (!wp_verify_nonce($_POST['my_nonce'], 'save_form'))
         die('Page expired');
-    $options = request('options');
+    $options = condition_injection_request('options');
     update_option('condition_injection', $options);
 } else {
     $options = get_option('condition_injection');
@@ -71,69 +71,69 @@ if (isset($_REQUEST['reset']) && (isset($_POST['my_nonce']) || isset($_GET['my_a
             <table class="form-table">
                 <tr valign="top">
                     <?php
-                    field_textarea('snippet', 'Code Snippet', ''
+                    condition_injection_add_field_textarea('snippet', 'Code Snippet', ''
                             , 'rows="10"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Enable Mobile Detection</th>
-                    <?php field_checkbox_only('enable_mobile_snippet', 'Inject the "Mobile Code Snippet" instead of the "Code Snippet" if a mobile device could be detected.'); ?>
+                    <?php condition_injection_add_field_checkbox_only('enable_mobile_snippet', 'Inject the "Mobile Code Snippet" instead of the "Code Snippet" if a mobile device could be detected.'); ?>
                 </tr>
                 <tr valign="top">
                     <?php
-                    field_textarea('mobile_snippet', 'Mobile Code Snippet', '', 'rows="10"');
+                    condition_injection_add_field_textarea('mobile_snippet', 'Mobile Code Snippet', '', 'rows="10"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <?php
-                    field_textarea('fallback_mobile_user_agents', 'User-Agents to detect mobile phone', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
+                    condition_injection_add_field_textarea('fallback_mobile_user_agents', 'User-Agents to detect mobile phone', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
                             . '<code>preg_match(\'/' . $options['fallback_mobile_user_agents'] . '/\', ...);</code><br>', 'rows="5"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Enable User-Agent Condition</th>
-                    <?php field_checkbox_only('enable_condition_user_agents', 'Define the User-Agents which are required to allow injecting the code-snippet.'); ?>
+                    <?php condition_injection_add_field_checkbox_only('enable_condition_user_agents', 'Define the User-Agents which are required to allow injecting the code-snippet.'); ?>
                 </tr>
                 <tr valign="top">
                     <?php
-                    field_textarea('condition_user_agents', 'Required User-Agents', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
+                    condition_injection_add_field_textarea('condition_user_agents', 'Required User-Agents', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
                             . '<code>preg_match(\'/' . $options['condition_user_agents'] . '/\', ...);</code><br>', 'rows="5"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Enable Referrer Condition</th>
-                    <?php field_checkbox_only('enable_condition_referrers', 'Define the Referrers which are required to allow injecting the code-snippet.'); ?>
+                    <?php condition_injection_add_field_checkbox_only('enable_condition_referrers', 'Define the Referrers which are required to allow injecting the code-snippet.'); ?>
                 </tr>
                 <tr valign="top">
                     <?php
-                    field_textarea('condition_referrers', 'Required Referrers', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
+                    condition_injection_add_field_textarea('condition_referrers', 'Required Referrers', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
                             . '<code>preg_match(\'/' . $options['condition_referrers'] . '/\', ...);</code><br>', 'rows="5"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Enable IP Condition</th>
-                    <?php field_checkbox_only('enable_condition_ip_trunkated', 'Define the IP-Addresses which are required from the visitor to allow injecting the code-snippet.'); ?>
+                    <?php condition_injection_add_field_checkbox_only('enable_condition_ip_trunkated', 'Define the IP-Addresses which are required from the visitor to allow injecting the code-snippet.'); ?>
                 </tr>
                 <tr valign="top">
                     <?php
-                    field_textarea('condition_ip_trunkated', 'Required (trunkated) IPs', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
+                    condition_injection_add_field_textarea('condition_ip_trunkated', 'Required (trunkated) IPs', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
                             . '<code>preg_match(\'/' . $options['condition_ip_trunkated'] . '/\', ...);</code><br>', 'rows="1"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Enable Reverse DNS Lookup</th>
-                    <?php field_checkbox_only('enable_condition_hostname', 'Define the Hostnames which are required from the visitor to allow injecting the code-snippet.<br> <b>Enabling affects the performance of your site.</b>'); ?>
+                    <?php condition_injection_add_field_checkbox_only('enable_condition_hostname', 'Define the Hostnames which are required from the visitor to allow injecting the code-snippet.<br> <b>Enabling affects the performance of your site.</b>'); ?>
                 </tr>
                 <tr valign="top">
                     <?php
-                    field_textarea('condition_hostnames', 'Required Hostnames', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
+                    condition_injection_add_field_textarea('condition_hostnames', 'Required Hostnames', 'For coders: a regular expression is built with those values and the resulting code will be<br>'
                             . '<code>preg_match(\'/' . $options['condition_hostnames'] . '/\', ...);</code><br>' .
                             '<a href="https://whatismyipaddress.com/ip-hostname" target="_blank" rel="norefferer noopener">Reverse DNS Lookup Tool</a>', 'rows="1"');
                     ?>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Allow php exec</th>
-                    <?php field_checkbox_only('condition_injection_php_exec', 'Enables you the ability to execute php code inside the Code Snippet. <p class="description">e.g.: <code>' . htmlentities('<?php echo "php test";?>') . '</code></p>'); ?>
+                    <?php condition_injection_add_field_checkbox_only('condition_injection_php_exec', 'Enables you the ability to execute php code inside the Code Snippet. <p class="description">e.g.: <code>' . htmlentities('<?php echo "php test";?>') . '</code></p>'); ?>
                 </tr>
             </table>
         </div>

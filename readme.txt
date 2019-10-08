@@ -40,7 +40,6 @@ FAQs are answered on [Condition Injection](https://javan.de/condition-injection/
 
 1. Configuration panel Settings
 2. Configuration panel Settings
-3. Revealed Referrer of a targeted visitor tracked with Google Analytics
 
 == Changelog ==
 

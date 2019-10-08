@@ -99,10 +99,10 @@ function condition_injection_wp_footer() {
     }
 }
 
-add_filter( 'plugin_action_links', 'my_add_action_links', 10, 5 );
-add_filter( 'plugin_row_meta',     'my_plugin_row_meta', 10, 2 );
+add_filter( 'plugin_action_links', 'condition_injection_add_action_links', 10, 5 );
+add_filter( 'plugin_row_meta',     'condition_injection_add_plugin_row_meta', 10, 2 );
 
-function my_add_action_links( $actions, $plugin_file ) {
+function condition_injection_add_action_links( $actions, $plugin_file ) {
  $action_links = array(
      'reset' => array(
          'label' => 'Reset',
@@ -114,19 +114,19 @@ function my_add_action_links( $actions, $plugin_file ) {
         'url'   => get_admin_url(null, 'options-general.php?page=condition-injection/options.php')
      )
    );
-  return plugin_action_links( $actions, $plugin_file, $action_links, 'before');
+  return condition_injection_plugin_action_links( $actions, $plugin_file, $action_links, 'before');
 }
 
-function my_plugin_row_meta( $actions, $plugin_file ) {
+function condition_injection_add_plugin_row_meta( $actions, $plugin_file ) {
  $action_links = array(
    'donate' => array(
       'label' => 'Donate',
       'url'   => 'https://javan.de/donate/'
     ));
-  return plugin_action_links( $actions, $plugin_file, $action_links, 'after');
+  return condition_injection_plugin_action_links( $actions, $plugin_file, $action_links, 'after');
 }
 
-function  plugin_action_links ( $actions, $plugin_file,  $action_links = array(), $position = 'after' ) {
+function  condition_injection_plugin_action_links ( $actions, $plugin_file,  $action_links = array(), $position = 'after' ) {
   static $plugin;
   if( !isset($plugin) ) {
       $plugin = plugin_basename( __FILE__ );
